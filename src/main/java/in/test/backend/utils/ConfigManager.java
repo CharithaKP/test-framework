@@ -1,11 +1,13 @@
+package in.test.backend.utils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertyManager {
-    private final Properties properties = new Properties();
+public class ConfigManager {
+    private static final Properties properties = new Properties();
 
-    public PropertyManager() throws IOException {
+    public ConfigManager() throws IOException {
         loadPropertyFromClassPath();
     }
 
@@ -17,6 +19,9 @@ public class PropertyManager {
             properties.load(in);
         }
 
+    }
+    public static String get(String key) {
+        return properties.getProperty(key);
     }
 
 }

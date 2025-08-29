@@ -8,7 +8,7 @@ import java.util.Properties;
 @Getter
 public enum ServiceURIs {
 
-    HEIMDALL_URL(getConfigProperty("base.url"));
+    URL(getConfigProperty("base.url"));
     
     private final String service;
     

@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ServiceEndpoints {
 
-    TEMPLATE_ENDPOINT("heimdall/v1/merchant/config/attributes");
+    TEMPLATE_ENDPOINT("");
 
     private final String uri;
     
