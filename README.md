@@ -1,4 +1,4 @@
-# Test Framework
+# Rest Assured Framework
 
 A comprehensive REST API testing framework built with Java, REST Assured, and TestNG for automated API testing and validation.
 
