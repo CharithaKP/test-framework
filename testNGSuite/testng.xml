@@ -1,0 +1,19 @@
+<suite name="REST API Testing Framework Suite" >
+    <!-- in case of parallel execution
+     <suite name="REST API Testing Framework Suite" parallel="classes" thread-count="30"> -->
+    <parameter name="environment" value="stage"/>
+
+    <!-- API Test Suite -->
+    <test name="API Tests" group-by-instances="true">
+        <groups>
+            <include name="api"/>
+        </groups>
+        <classes>
+    <!-- sample   <class name="in.test.backend.examples.SampleDatabaseTest"/> -->
+ </classes>
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+</test>
+</suite>
+

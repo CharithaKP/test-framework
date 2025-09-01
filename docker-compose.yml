@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # Test Framework Application
+  test-framework:
+    build: .
+    container_name: api-test-framework
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USERNAME=testuser
+      - MYSQL_PASSWORD=testpass
+    volumes:
+      - ./target/test-reports:/app/target/test-reports
+      - ./logs:/app/logs
+      - ./src/main/resources/config.properties:/app/src/main/resources/config.properties
+    networks:
+      - test-network
+    command: mvn test
+
+  # MySQL Database for testing
+  mysql:
+    image: mysql:8.0
+    container_name: test-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: testpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - test-network
+
+  # Redis (optional, for caching tests)
+  redis:
+    image: redis:7-alpine
+    container_name: test-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - test-network
+
+  # Test Report Server (optional)
+  report-server:
+    image: nginx:alpine
+    container_name: test-reports
+    ports:
+      - "8080:80"
+    volumes:
+      - ./target/test-reports:/usr/share/nginx/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - test-framework
+    networks:
+      - test-network
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  test-network:
+    driver: bridge
