@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ServiceEndpoints {
 
-    TEMPLATE_ENDPOINT("");
+
+    SAMPLE_ENDPOINT("");
 
     private final String uri;
     
