@@ -2,6 +2,13 @@
     <!-- in case of parallel execution
      <suite name="REST API Testing Framework Suite" parallel="classes" thread-count="30"> -->
     <parameter name="environment" value="stage"/>
+    
+    <!-- Retry Configuration Parameters -->
+    <parameter name="maxRetriesFromSuite" value="3"/>
+    <parameter name="delayBetweenRetryInSeconds" value="2"/>
+    <parameter name="retryEnabled" value="true"/>
+    <parameter name="retryConfigName" value="default"/>
+    <parameter name="retryConfigFile" value="/retry-config.xml"/>
 
     <!-- API Test Suite -->
     <test name="API Tests" group-by-instances="true">
@@ -13,7 +20,7 @@
  </classes>
     <listeners>
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+        <listener class-name="in.test.backend.listeners.TestNGRetryListener"/>
     </listeners>
 </test>
 </suite>
-
